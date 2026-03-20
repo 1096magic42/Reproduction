@@ -6,11 +6,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import LeaveOneOut
 
-np.random.seed(42)
-n_samples = 58
-n_features = 3
 df = pd.read_excel('ddPCR.xlsx')
-X = df[['ELOVL2sq', 'FHL2', 'PDE4C']].values
+X = df[['ELOV2index', 'FHL2', 'PDE4C']].values
 y = df['Chro.Age'].values
 X_train, X_val, y_train, y_val = train_test_split(
     X, y, test_size=0.3, random_state=42
@@ -48,12 +45,11 @@ r2 = r2_score(y_true, y_pred)
 
 print(f"LOOCV 平均绝对误差 (MAE): {mae:.2f} 岁")
 print(f"LOOCV R² 分数: {r2:.3f}")
-
 import matplotlib.pyplot as plt
 from scipy.stats import spearmanr
 
 # 计算预测年龄
-df['pred_age'] = -25.166 + 0.003*df['ELOVL2']**2 + 0.924*df['FHL2'] + 0.527*df['PDE4C']
+df['pred_age'] = -19.398 + 0.156*df['ELOV2index'] + 0.774*df['FHL2'] + 0.463*df['PDE4C']
 
 # 计算Spearman相关系数
 rho, p = spearmanr(df['Chro.Age'], df['pred_age'])
